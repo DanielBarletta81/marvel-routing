@@ -1,0 +1,11 @@
+.home-container {
+  text-align: center;
+  padding: 2rem;
+  color: white;
+}
+
+.home-content {
+  max-width: 800px;
+  margin: 2rem auto;
+  font-size: 1.2rem;
+}

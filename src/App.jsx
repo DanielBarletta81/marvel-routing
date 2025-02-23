@@ -1,39 +1,41 @@
-import React, { useState } from 'react';
-import CharacterList from './components/CharacterList';
-import CharacterDetail from './components/CharacterDetail';
+import React from 'react';
+import { NavLink, Outlet } from 'react-router-dom';
 import './App.css';
 
 const App = () => {
-    // -- Task 4: Integrating Components and Updating the User Interface --
-
-  const [selectedCharacterId, setSelectedCharacterId] = useState(null);
-
-  const handleCharacterSelect = (characterId) => {
-    setSelectedCharacterId(characterId);
-  };
-
   return (
     <div className="app">
-      <header>
-        <h1>Marvel Characters Explorer</h1>
+      <header className="main-header">
+        <div className="logo">
+          <NavLink to="/">
+            <img src="/marvel-logo.jpg" alt="Marvel Logo" />
+          </NavLink>
+        </div>
+        <nav>
+          <NavLink 
+            to="/" 
+            className={({ isActive }) => isActive ? 'active-link' : ''}
+          >
+            Home
+          </NavLink>
+          <NavLink 
+            to="/characters"
+            className={({ isActive }) => isActive ? 'active-link' : ''}
+          >
+            Browse Characters
+          </NavLink>
+          <NavLink 
+            to="/comics"
+            className={({ isActive }) => isActive ? 'active-link' : ''}
+          >
+            Comics
+          </NavLink>
+        </nav>
       </header>
       <main>
-        {selectedCharacterId ? (
-          <div className="detail-view">
-            <button 
-              className="back-button"
-              onClick={() => setSelectedCharacterId(null)}
-            >
-              Back to Characters
-            </button>
-            <CharacterDetail characterId={selectedCharacterId} />
-          </div>
-        ) : (
-          <CharacterList onCharacterSelect={handleCharacterSelect} />
-        )}
+        <Outlet />
       </main>
     </div>
   );
 };
-
 export default App;

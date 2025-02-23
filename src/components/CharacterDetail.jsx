@@ -1,82 +1,51 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import md5 from 'md5';
 import './CharacterDetail.css';
-
-// -- Task 3: Fetch and Display Character Details --
 
 const CharacterDetail = ({ characterId }) => {
   const [character, setCharacter] = useState(null);
-  const [comics, setComics] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchCharacterDetails = async () => {
+    const fetchCharacterDetail = async () => {
+      if (!characterId) return;
+      
+      const timestamp = new Date().getTime();
+      const privateKey = process.env.REACT_APP_MARVEL_PRIVATE_KEY;
+      const publicKey = process.env.REACT_APP_MARVEL_API_KEY;
+      const hash = md5(`${timestamp}${privateKey}${publicKey}`);
+
       try {
-        const response = await axios.get(
-          `https://gateway.marvel.com/v1/public/characters/${characterId}`,
-          {
-            params: {
-              ts: '1',
-              apikey: process.env.REACT_APP_MARVEL_PUBLIC_KEY,
-              hash: process.env.REACT_APP_MARVEL_HASH
-            }
+        const response = await axios.get(`https://gateway.marvel.com/v1/public/characters/${characterId}`, {
+          params: {
+            ts: timestamp,
+            apikey: publicKey,
+            hash: hash
           }
-        );
+        });
         setCharacter(response.data.data.results[0]);
-        
-        // Fetch associated comics
-        const comicsResponse = await axios.get(
-          `https://gateway.marvel.com/v1/public/characters/${characterId}/comics`,
-          {
-            params: {
-              ts: '1',
-              apikey: process.env.REACT_APP_MARVEL_PUBLIC_KEY,
-              hash: process.env.REACT_APP_MARVEL_HASH,
-              limit: 5
-            }
-          }
-        );
-        setComics(comicsResponse.data.data.results);
       } catch (error) {
-        console.error('Error fetching character details:', error);
+        console.log('Error fetching character:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
-    if (characterId) {
-      fetchCharacterDetails();
-    }
+    fetchCharacterDetail();
   }, [characterId]);
 
-  if (!character) {
-    return <div className="loading">Loading character details...</div>;
-  }
+  if (loading) return <div>Loading...</div>;
+  if (!character) return <div>Character not found</div>;
 
   return (
     <div className="character-detail">
-      <div className="character-header">
-        <img 
-          src={`${character.thumbnail.path}.${character.thumbnail.extension}`}
-          alt={character.name}
-        />
-        <div className="character-info">
-          <h2>{character.name}</h2>
-          <p>{character.description || 'No description available.'}</p>
-        </div>
-      </div>
-      
-      <div className="comics-section">
-        <h3>Featured Comics</h3>
-        <div className="comics-grid">
-          {comics.map(comic => (
-            <div key={comic.id} className="comic-card">
-              <img 
-                src={`${comic.thumbnail.path}.${comic.thumbnail.extension}`}
-                alt={comic.title}
-              />
-              <h4>{comic.title}</h4>
-            </div>
-          ))}
-        </div>
-      </div>
+      <h2>{character.name}</h2>
+      <img 
+        src={`${character.thumbnail.path}.${character.thumbnail.extension}`} 
+        alt={character.name} 
+      />
+      <p>{character.description || 'No description available.'}</p>
     </div>
   );
 };
