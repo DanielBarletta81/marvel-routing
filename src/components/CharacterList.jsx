@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import md5 from 'md5';
 import './CharacterList.css';
@@ -8,7 +9,6 @@ const CharacterList = () => {
   const [characters, setCharacters] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedCharacter, setSelectedCharacter] = useState(null);
- 
 
   useEffect(() => {
     const fetchCharacters = async () => {
@@ -43,36 +43,27 @@ const CharacterList = () => {
 
   if (loading) return <div>Loading...</div>
   return (
-    <div className="character-container">
+    <div className="character-list-container">
+      <div className="character-list-header">
+        <h1>Marvel Characters</h1>
+      </div>
       <div className="character-grid">
         {characters.map(character => (
-          <div 
-            key={character.id} 
-            className="character-card"
-            onClick={() => handleCharacterClick(character)}
+          <Link 
+            to={`/characters/${character.id}`}
+            key={character.id}
+            className="character-link"
           >
-            <img 
-              src={`${character.thumbnail.path}.${character.thumbnail.extension}`} 
-              alt={character.name} 
-            />
-            <h3>{character.name}</h3>
-          </div>
+            <div className="character-card">
+              <img 
+                src={`${character.thumbnail.path}.${character.thumbnail.extension}`} 
+                alt={character.name} 
+              />
+              <h3>{character.name}</h3>
+            </div>
+          </Link>
         ))}
       </div>
-
-      {selectedCharacter && (
-        <div className="character-detail-modal">
-          <div className="modal-content">
-            <button onClick={() => setSelectedCharacter(null)}>Close</button>
-            <img 
-              src={`${selectedCharacter.thumbnail.path}.${selectedCharacter.thumbnail.extension}`} 
-              alt={selectedCharacter.name} 
-            />
-            <h2>{selectedCharacter.name}</h2>
-            <p>{selectedCharacter.description || "No description available"}</p>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

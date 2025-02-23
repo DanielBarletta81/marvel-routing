@@ -11,6 +11,9 @@ const App = () => {
             <img src="/marvel-logo.jpg" alt="Marvel Logo" />
           </NavLink>
         </div>
+        <div className="brand">
+    <h1>Marvelous Marvel</h1>
+  </div>
         <nav>
           <NavLink 
             to="/" 
