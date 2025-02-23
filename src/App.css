@@ -28,6 +28,51 @@
   color: #61dafb;
 }
 
+
+.app {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+header {
+  background-color: #202020;
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 2rem;
+}
+
+main {
+  padding: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.detail-view {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.back-button {
+  background-color: #202020;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  font-size: 16px;
+}
+
+.back-button:hover {
+  background-color: #404040;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -36,3 +81,4 @@
     transform: rotate(360deg);
   }
 }
+
