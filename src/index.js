@@ -6,7 +6,8 @@ import Home from './components/Home';
 import CharacterList from './components/CharacterList';
 import CharacterDetail from './components/CharacterDetail';
 import Comics from './components/Comics';
-import ComicDetail from './components/ComicDetail';
+import ErrorPage from './components/ErrorPage';
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -18,8 +19,8 @@ root.render(
           <Route path="characters" element={<CharacterList />} />
           <Route path="characters/:id" element={<CharacterDetail />} />
           <Route path="comics" element={<Comics />} />
-          <Route path="comics/:id" element={<ComicDetail />} />
         </Route>
+        <Route path="*" element={<ErrorPage />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

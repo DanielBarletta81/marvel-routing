@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import md5 from 'md5';
+import { useParams } from 'react-router-dom';
 import './CharacterDetail.css';
 
-const CharacterDetail = ({ characterId }) => {
+const CharacterDetail = () => {
+  const { id } = useParams();
   const [character, setCharacter] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchCharacterDetail = async () => {
-      if (!characterId) return;
+      if (!id) return;
       
       const timestamp = new Date().getTime();
       const privateKey = process.env.REACT_APP_MARVEL_PRIVATE_KEY;
@@ -17,7 +19,7 @@ const CharacterDetail = ({ characterId }) => {
       const hash = md5(`${timestamp}${privateKey}${publicKey}`);
 
       try {
-        const response = await axios.get(`https://gateway.marvel.com/v1/public/characters/${characterId}`, {
+        const response = await axios.get(`https://gateway.marvel.com/v1/public/characters/${id}`, {
           params: {
             ts: timestamp,
             apikey: publicKey,
@@ -33,7 +35,7 @@ const CharacterDetail = ({ characterId }) => {
     };
 
     fetchCharacterDetail();
-  }, [characterId]);
+  }, [id]);
 
   if (loading) return <div>Loading...</div>;
   if (!character) return <div>Character not found</div>;
@@ -49,5 +51,4 @@ const CharacterDetail = ({ characterId }) => {
     </div>
   );
 };
-
 export default CharacterDetail;

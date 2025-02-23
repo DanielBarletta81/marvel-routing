@@ -1,0 +1,27 @@
+.error-container {
+  min-height: 100vh;
+  background-image: url('../../public/error-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+.error-content {
+  background: rgba(0, 0, 0, 0.7);
+  padding: 2rem;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.error-content button {
+  background: #e23636;
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 1rem;
+}
